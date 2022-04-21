@@ -1,0 +1,49 @@
+{% extends 'base_site.html' %}
+
+{% block title %}サービス一覧{% endblock %}
+
+{% block body_extra %}
+ class="loading" data-layout="topnav" data-layout-config='{"layoutBoxed":false,"darkMode":false,"showRightSidebarOnStart": true}'
+{% endblock %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                </div>
+                <h4 class="page-title">サービス{% if object %}変更{% else %}追加{% endif %}</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    {% from "_formhelpers.html" import render_field %}
+                    <form method="post" class="needs-validation {{ form_class　}}" novalidate>
+                        <div>
+                            {{ render_field(form.name) }}
+                            {{ render_field(form.domain) }}
+                            {{ render_field(form.upgrade_file) }}
+                        </div>
+                        <div class="actions">
+                            <input type="submit" value="保存" class="btn btn-primary">
+                            <a href="{{ url_for('service-list') }}" class="btn btn-secondary">戻る</a>
+                        </div>
+                    </form>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- content -->
+
+{% endblock %}

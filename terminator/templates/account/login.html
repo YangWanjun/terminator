@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}システムメンテナンス情報{% endblock %}
+
+{% block body_extra %}
+ class="authentication-bg pb-0" data-layout-config='{"darkMode":false}'
+{% endblock %}
+
+{% block page_content %}
+<div class="auth-fluid">
+    <!--Auth fluid left content -->
+    <div class="auth-fluid-form-box">
+        <div class="align-items-center d-flex h-100">
+            <div class="card-body">
+
+                <!-- Logo -->
+                <div class="auth-brand text-center text-lg-start">
+                    <a href="index.html" class="logo-dark">
+                        <span><img src="{{ url_for('static', filename='custom/images/logo.png') }}" alt="" height="36"></span>
+                    </a>
+                </div>
+
+                <!-- title-->
+                <h4 class="text-center mt-0">ようこそ</h4>
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline-danger rounded-pill">
+                        <i class="mdi mdi-google"></i>
+                        E-Business Mail
+                    </button>
+                    <p class="text-muted font-16 my-4">Or sign in with credentials</p>
+                </div>
+
+                <!-- form -->
+                <form method="post" action="#">
+                    <!-- social-->
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Username</label>
+                        <input class="form-control" type="text" required="" id="id_username" name="username"
+                               placeholder="Enter your username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_password" class="form-label">Password</label>
+                        <input class="form-control" type="password" required="" id="id_password" name="password"
+                               placeholder="Enter your password">
+                    </div>
+                    <div class="d-grid mb-0 text-center">
+                        <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i> Log In</button>
+                    </div>
+                </form>
+                <!-- end form-->
+
+                <!-- Footer-->
+<!--                <footer class="footer footer-alt">-->
+<!--                    <p class="text-muted">-->
+<!--                        Don't have an account?-->
+<!--                        <a href="pages-register-2.html" class="text-muted ms-1"><b>Sign Up</b></a>-->
+<!--                    </p>-->
+<!--                </footer>-->
+            </div> <!-- end .card-body -->
+        </div> <!-- end .align-items-center.d-flex.h-100-->
+    </div>
+    <!-- end auth-fluid-form-box-->
+
+    <!-- Auth fluid right content -->
+    <div class="auth-fluid-right text-center">
+        <div class="auth-user-testimonial">
+            <h2 class="mb-3">FUSION & INNOVATION</h2>
+            <p class="lead"><i class="mdi mdi-format-quote-open"></i>
+                ｢融合と革新｣輝く未来へ .
+                <i class="mdi mdi-format-quote-close"></i>
+            </p>
+            <p>
+                E-BUSINESS
+            </p>
+        </div> <!-- end auth-user-testimonial-->
+    </div>
+    <!-- end Auth fluid right content -->
+</div>
+<!-- end auth-fluid-->
+{% endblock %}

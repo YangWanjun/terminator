@@ -1,0 +1,94 @@
+{% extends 'base_site.html' %}
+
+{% block title %}メンテナンス情報一覧{% endblock %}
+
+{% block body_extra %}
+ class="loading" data-layout="topnav" data-layout-config='{"layoutBoxed":false,"darkMode":false,"showRightSidebarOnStart": true}'
+{% endblock %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                </div>
+                <h4 class="page-title">サービス一覧</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-sm-4">
+                            <a href="{{ url_for('service-add') }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> サービス追加</a>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="text-sm-end">
+                            </div>
+                        </div><!-- end col-->
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-centered table-striped dt-responsive nowrap w-100" id="products-datatable">
+                            <thead>
+                                <tr>
+                                    <th>システム名称</th>
+                                    <th>ドメイン</th>
+                                    <th>更新ファイルパス</th>
+                                    <th class="text-center" style="width: 85px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in objects %}
+                                <tr>
+                                    <td>{{ item.name }}</td>
+                                    <td>{{ item.domain }}</td>
+                                    <td>{{ item.upgrade_file }}</td>
+                                    <td class="text-center">
+                                        <a href="{{ url_for('service-change', pk=item.id) }}" class="action-icon"><i class="mdi mdi-square-edit-outline"></i></a>
+                                        <a href="javascript:void(0)" onclick="handleDeleteMaintenance({{item.id}})" class="action-icon"><i class="mdi mdi-delete"></i></a>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td class="text-center" colspan="5">データがありません。</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col -->
+    </div>
+    <!-- end row -->
+</div>
+<script type="text/javascript">
+    async function handleDeleteMaintenance(pk) {
+        if (confirm('削除します、よろしいですか？')) {
+            const response = await fetch(`/master/service/${pk}/delete`, {
+                method: 'POST',
+                mode: 'same-origin',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+            })
+            if (response.ok) {
+                alert('削除成功しました。');
+                window.location.reload();
+            } else {
+                alert(response.json().detail)
+            }
+        }
+    }
+</script>
+<!-- content -->
+
+{% endblock %}
