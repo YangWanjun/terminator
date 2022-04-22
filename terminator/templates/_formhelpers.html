@@ -3,13 +3,13 @@
   <dt>{{ field.label }}</dt>
   <dd>{{ field(**kwargs)|safe }}
     <div class="invalid-feedback">
-      {%if field.flags.required %}
-        <div>{{ field.label.text }}は必須項目です。</div>
-      {% endif %}
       {% if field.errors %}
         {% for error in field.errors %}
           <div>{{ error }}</div>
         {% endfor %}
+        {{ field.export_js_validations()|safe }}
+      {% elif field.flags.required %}
+        <div>{{ field.label.text }}は必須項目です。</div>
       {% endif %}
     </div>
   </dd>

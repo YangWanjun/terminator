@@ -26,8 +26,8 @@ class User(TimestampMixin, db.Model):
 class Service(TimestampMixin, db.Model):
     __tablename__ = 't_service'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    domain = db.Column(db.String(50), nullable=False, unique=True)
     name = db.Column(db.String(50), nullable=False)
-    domain = db.Column(db.String(50), nullable=False)
     upgrade_file = db.Column(db.String(200), nullable=False)
 
 

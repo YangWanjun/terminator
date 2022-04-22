@@ -19,6 +19,31 @@ class LabelMixin(object):
         )
 
 
+class ValidateMixin(object):
+
+    def export_js_validations(self):
+        js_extra_part = ""
+        js_field = """
+const _eleField_{0} = document.querySelector("#{0}");
+_eleField_{0}.setCustomValidity('error');
+_eleField_{0}.addEventListener('change', function (e) {{
+    _eleField_{0}.setCustomValidity('');
+}});
+        """.format(self.id)
+        if hasattr(self, 'id_date') and hasattr(self, 'id_time'):
+            js_extra_part = """
+const _eleFieldDate_{1} = document.querySelector("#{1}");
+const _eleFieldTime_{2} = document.querySelector("#{2}");
+_eleFieldDate_{1}.addEventListener('change', function (e) {{
+    _eleField_{0}.setCustomValidity('');
+}});
+_eleFieldTime_{2}.addEventListener('change', function (e) {{
+    _eleField_{0}.setCustomValidity('');
+}});
+            """.format(self.id, self.id_date, self.id_time)
+        return '<script type="text/javascript">{}{}</script>'.format(js_field, js_extra_part)
+
+
 class MyLabel(Label):
 
     def __init__(self, field_id, text, required=False):
@@ -30,17 +55,25 @@ class MyLabel(Label):
         return self(**attrs)
 
 
-class MyStringField(LabelMixin, StringField):
+class MyStringField(LabelMixin, ValidateMixin, StringField):
     widget = MyTextInput()
 
 
-class MySelectField(LabelMixin, SelectField):
+class MySelectField(LabelMixin, ValidateMixin, SelectField):
     widget = MySelect()
 
 
-class MyDateTimeField(LabelMixin, DateTimeField):
+class MyDateTimeField(LabelMixin, ValidateMixin, DateTimeField):
     widget = MyDateTimeInput()
 
+    @property
+    def id_date(self):
+        return f'{self.id}_date'
 
-class MyTextAreaField(LabelMixin, TextAreaField):
+    @property
+    def id_time(self):
+        return f'{self.id}_time'
+
+
+class MyTextAreaField(LabelMixin, ValidateMixin, TextAreaField):
     widget = MyTextArea()

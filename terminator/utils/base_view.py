@@ -1,7 +1,11 @@
+import typing as t
+
 from flask import render_template, g, redirect, url_for
+from flask.typing import ResponseReturnValue
 from flask.views import MethodView
 
 from terminator.database import db
+from terminator.hooks import transaction
 
 
 def login_required(func):
@@ -22,10 +26,20 @@ class BaseApiView(MethodView):
 class BaseDeleteView(BaseApiView):
     model = None
 
+    def get_object(self, **kwargs):
+        return self.model.query.filter_by(id=kwargs.get('pk')).first_or_404()
+
+    @transaction
+    def dispatch_request(self, *args: t.Any, **kwargs: t.Any) -> ResponseReturnValue:
+        return super(BaseDeleteView, self).dispatch_request(*args, **kwargs)
+
+    def post_extra(self, obj, **kwargs):
+        pass
+
     def post(self, *args, **kwargs):
-        obj = self.model.query.filter_by(id=kwargs.get('pk')).first_or_404()
+        obj = self.get_object(**kwargs)
+        self.post_extra(obj, **kwargs)
         db.session.delete(obj)
-        db.session.commit()
         return {}
 
 
@@ -38,6 +52,10 @@ class BaseMethodView(MethodView):
 
     def render_template(self, context):
         return render_template(self.get_template_name(), **context)
+
+    @transaction
+    def dispatch_request(self, *args: t.Any, **kwargs: t.Any) -> ResponseReturnValue:
+        return super(BaseMethodView, self).dispatch_request(*args, **kwargs)
 
     def get(self, *args, **kwargs):
         context = {**self.get_context_data(*args, **kwargs)}

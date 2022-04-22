@@ -51,7 +51,6 @@ class MaintenanceDetailView(BaseMethodView):
                 db.session.add(maintenance_info)
                 # スケジュールを立てる
                 biz.add_schedule(maintenance_info)
-            db.session.commit()
             return redirect(url_for('maintenance-list'))
         else:
             context['form_class'] = 'was-validated'
@@ -60,6 +59,9 @@ class MaintenanceDetailView(BaseMethodView):
 
 class MaintenanceDeleteView(BaseDeleteView):
     model = MaintenanceInfo
+
+    def post_extra(self, obj, **kwargs):
+        biz.remove_schedule(obj)
 
 
 class ServiceListView(BaseMethodView):
@@ -96,7 +98,6 @@ class ServiceDetailView(BaseMethodView):
                 service = Service()
                 form.populate_obj(service)
                 db.session.add(service)
-            db.session.commit()
             return redirect(url_for('service-list'))
         else:
             context['form_class'] = 'was-validated'

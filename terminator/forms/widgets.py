@@ -31,8 +31,6 @@ class MyDateTimeInput(DateTimeInput):
             if k in self.validation_attrs and k not in kwargs:
                 kwargs[k] = getattr(flags, k)
         html_hidden = "<input %s style='display:none'>" % self.html_params(name=field.name, **kwargs)
-        id_date = f'{field.id}_date'
-        id_time = f'{field.id}_time'
         if field.data:
             date_part = field.data.strftime(field.strptime_format[0].split(' ')[0])
             time_part = field.data.strftime(field.strptime_format[0].split(' ')[1])
@@ -40,11 +38,11 @@ class MyDateTimeInput(DateTimeInput):
             date_part = time_part = None
         html_date = "<input %s>" % self.html_params(
             name=f'{field.name}_date',
-            **kwargs | {'id': id_date, 'type': 'date', 'value': date_part}
+            **kwargs | {'id': field.id_date, 'type': 'date', 'value': date_part}
         )
         html_time = "<input %s>" % self.html_params(
             name=f'{field.name}_time',
-            **kwargs | {'id': id_time, 'type': 'time', 'value': time_part}
+            **kwargs | {'id': field.id_time, 'type': 'time', 'value': time_part}
         )
         script = '''<script type="text/javascript">
 document.querySelector("#{0}").addEventListener("change", () => {{
@@ -67,7 +65,7 @@ document.querySelector("#{1}").addEventListener("change", () => {{
         document.querySelector("#{2}").value = `${{_tmpDate}} ${{_tmpTime}}`;
     }}
 }});
-</script>'''.format(id_date, id_time, field.id)
+</script>'''.format(field.id_date, field.id_time, field.id)
         return Markup('<div class="datetime_wrapper">{}{}</div>{}{}'.format(html_date, html_time, html_hidden, script))
 
 
