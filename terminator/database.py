@@ -2,6 +2,7 @@ import click
 from flask import Flask
 from flask.cli import with_appcontext
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 
 db = SQLAlchemy()
@@ -33,16 +34,13 @@ def init_db_command():
 @click.command('create-user')
 @with_appcontext
 def create_user():
-    username = email = None
-    while not username:
-        username = click.prompt('ユーザー名を入力してください', type=str)
-    while not email:
-        email = click.prompt('メールアドレスを入力してください', type=str)
+    username = click.prompt('ユーザー名を入力してください', type=str)
+    email = click.prompt('メールアドレスを入力してください', type=str)
 
     def read_password():
         return (
-            click.prompt('パスワードを入力してください', hide_input=True, type=str),
-            click.prompt('パスワード（確認）を入力してください', hide_input=True, type=str),
+            click.prompt('パスワードを入力してください', hide_input=True, type=str, default=""),
+            click.prompt('パスワード（確認）を入力してください', hide_input=True, type=str, default=""),
         )
 
     password, password_confirm = read_password()
@@ -52,7 +50,13 @@ def create_user():
 
     from .models import User
     user = User(username=username, email=email)
-    user.password = generate_password_hash(password)
-    db.session.add(user)
-    db.session.commit()
-    click.echo(f'ユーザー「{user.id}:{username}」は追加しました.')
+    if password:
+        user.password = generate_password_hash(password)
+    else:
+        user.password = ""
+    try:
+        db.session.add(user)
+        db.session.commit()
+        click.echo(f'ユーザー「{user.id}:{username}」は追加しました.')
+    except IntegrityError:
+        click.secho('既に存在しているユーザーです。', fg='red')

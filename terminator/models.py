@@ -18,11 +18,20 @@ class User(TimestampMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(20), nullable=True)
+    first_name = db.Column(db.String(20), nullable=True)
     password = db.Column(db.String(200), nullable=False)
 
     def __init__(self, username: str, email: str):
         self.username = username
         self.email = email
+
+    @property
+    def full_name(self):
+        if self.last_name and self.first_name:
+            return f'{self.last_name} {self.first_name}'
+        else:
+            return self.last_name or self.first_name
 
 
 class Service(TimestampMixin, db.Model):

@@ -22,7 +22,7 @@ class="loading" data-layout-config='{"darkMode":false}'
                         </p>
                     {% endif %}
                     {% if content %}
-                        {{ content|safe }}
+                        <p class="text-muted" style="white-space: pre-line;">{{ content|safe }}</p>
                     {% else %}
                         <p class="text-muted">We're making the system more awesome. We'll be back shortly.</p>
                     {% endif %}

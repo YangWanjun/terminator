@@ -20,10 +20,10 @@
                     </a>
                 </div>
 
-                <!-- title-->
+                <!-- social-->
                 <h4 class="text-center mt-0">ようこそ</h4>
                 <div class="text-center mt-4">
-                    <button class="btn btn-outline-danger rounded-pill">
+                    <button class="btn btn-outline-danger rounded-pill" onclick="casLogin()">
                         <i class="mdi mdi-google"></i>
                         E-Business Mail
                     </button>
@@ -32,7 +32,15 @@
 
                 <!-- form -->
                 <form method="post" action="#">
-                    <!-- social-->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>{{ message }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
                     <div class="mb-3">
                         <label for="id_username" class="form-label">Username</label>
                         <input class="form-control" type="text" required="" id="id_username" name="username"
@@ -77,4 +85,10 @@
     <!-- end Auth fluid right content -->
 </div>
 <!-- end auth-fluid-->
+<script type="text/javascript">
+    function casLogin() {
+        const backUrl = `${window.location.origin}/account/login`;
+        window.location.assign(`https://cas.e-business.co.jp/login?service=${encodeURIComponent(backUrl)}`)
+    }
+</script>
 {% endblock %}

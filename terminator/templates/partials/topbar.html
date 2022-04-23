@@ -14,27 +14,16 @@
 
         <ul class="list-unstyled topbar-menu float-end mb-0">
 
-            <li class="dropdown notification-list d-xl-none">
-                <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                    <i class="dripicons-search noti-icon"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-animated dropdown-lg p-0">
-                    <form class="p-3">
-                        <input type="text" class="form-control" placeholder="Search ..." aria-label="Recipient's username">
-                    </form>
-                </div>
-            </li>
-
             <li class="dropdown notification-list">
                 <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" id="topbar-userdrop" href="#" role="button" aria-haspopup="true"
                     aria-expanded="false">
                     <span class="account-user-avatar">
-                        <img src="{{ url_for('static', filename='bootstrap5/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
+                        <img src="{{ url_for('static', filename='custom/images/avatar.svg') }}" alt="user-image" class="rounded-circle">
                     </span>
                     <span>
                         {% if g.user %}
                             <span class="account-user-name">{{ g.user['username'] }}</span>
-                            <span class="account-position"></span>
+                            <span class="account-position">{{ g.user.full_name }}</span>
                         {% else %}
                             <span class="account-user-name">Dominic Keller</span>
                             <span class="account-position">Founder</span>
