@@ -30,7 +30,6 @@ def login():
         flash(error)
     elif request.method == 'GET':
         ticket = request.args.get('ticket')
-        current_app.logger.debug('ticker: %s', ticket)
         if ticket:
             # CASログイン
             username = cas_verify_ticket(ticket)
