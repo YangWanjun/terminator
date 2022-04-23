@@ -56,10 +56,6 @@ class ServiceForm(MyForm):
         validators.DataRequired(),
         validators.Length(max=50),
     ])
-    upgrade_file = MyStringField('更新ファイルパス', validators=[
-        validators.DataRequired(),
-        validators.Length(max=200),
-    ])
 
     def validate_domain(self, field: Field):
         # ドメインは一意であること

@@ -42,7 +42,6 @@
                                 <tr>
                                     <th>システム名称</th>
                                     <th>ドメイン</th>
-                                    <th>更新ファイルパス</th>
                                     <th class="text-center" style="width: 85px;">Action</th>
                                 </tr>
                             </thead>
@@ -51,7 +50,6 @@
                                 <tr>
                                     <td>{{ item.name }}</td>
                                     <td>{{ item.domain }}</td>
-                                    <td>{{ item.upgrade_file }}</td>
                                     <td class="text-center">
                                         <a href="{{ url_for('service-change', pk=item.id) }}" class="action-icon"><i class="mdi mdi-square-edit-outline"></i></a>
                                         <a href="javascript:void(0)" onclick="handleDeleteMaintenance({{item.id}})" class="action-icon"><i class="mdi mdi-delete"></i></a>

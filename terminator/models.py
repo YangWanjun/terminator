@@ -1,5 +1,7 @@
 from datetime import datetime
+from pathlib import Path
 
+from flask import current_app
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -28,7 +30,10 @@ class Service(TimestampMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     domain = db.Column(db.String(50), nullable=False, unique=True)
     name = db.Column(db.String(50), nullable=False)
-    upgrade_file = db.Column(db.String(200), nullable=False)
+
+    @property
+    def upgrade_file(self):
+        return Path(current_app.instance_path) / f'maintenance/{self.domain}.html'
 
 
 class MaintenanceInfo(TimestampMixin, db.Model):
@@ -39,6 +44,9 @@ class MaintenanceInfo(TimestampMixin, db.Model):
     start_dt = db.Column(db.DateTime, nullable=False)
     end_dt = db.Column(db.DateTime, nullable=False)
     content = db.Column(db.String(2000), nullable=True)
+
+    def get_jobs_id(self):
+        return f'{self.id}_start', f'{self.id}_end'
 
     @property
     def status(self):
