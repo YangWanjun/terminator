@@ -16,6 +16,7 @@ def cas_verify_ticket(ticket):
         'service': service_url,
     }
     response = requests.get(current_app.config.get('CAS_VALIDATE_URL'), params=params)
+    current_app.logger.debug('response.ok: %s', response.ok)
     if response.ok:
         username = None
         # attributes = {}
@@ -31,6 +32,7 @@ def cas_verify_ticket(ticket):
             #         pgtiou = element.text
             #     elif element.tag.endswith('attributes') or element.tag.endswith('norEduPerson'):
             #         attributes = parse_attributes_xml_element(element)
+        current_app.logger.debug('username: %s', username)
         return username
     return None
 

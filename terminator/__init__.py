@@ -1,11 +1,23 @@
+import datetime
+import logging
 import os
+from pathlib import Path
 
 from flask import Flask
+from flask.logging import default_handler
 
 
 def create_app():
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+    # logger
+    app.logger.removeHandler(default_handler)
+    log_folder = Path(app.instance_path) / f'log'
+    os.makedirs(log_folder, exist_ok=True)
+    log_handler = logging.FileHandler(log_folder / f'system.{datetime.date.today().strftime("%Y%m")}.log')
+    log_handler.setLevel(logging.DEBUG)
+    app.logger.addHandler(log_handler)
+    app.logger.setLevel(logging.DEBUG)
 
     # load default config
     app.config.from_object('terminator.config')

@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, redirect, url_for, flash, render_template
+from flask import Blueprint, request, session, redirect, url_for, flash, render_template, current_app
 from werkzeug.security import check_password_hash
 
 from terminator.models import User
@@ -30,6 +30,7 @@ def login():
         flash(error)
     elif request.method == 'GET':
         ticket = request.args.get('ticket')
+        current_app.logger.debug('ticker: %s', ticket)
         if ticket:
             # CASログイン
             username = cas_verify_ticket(ticket)
