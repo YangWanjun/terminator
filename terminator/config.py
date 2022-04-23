@@ -10,3 +10,5 @@ SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{user}:{password}@{host}/{db}?charset
 })
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 PERMANENT_SESSION_LIFETIME = timedelta(minutes=30)
+# Custom config
+CAS_VALIDATE_URL = 'https://cas.e-business.co.jp/p3/serviceValidate'
