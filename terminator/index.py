@@ -1,20 +1,19 @@
-from urllib.parse import urlparse
+from flask import Blueprint, request, render_template
+from flask_cors import cross_origin
 
-from flask import Blueprint, request, render_template, current_app
-
-from terminator.models import Service, MaintenanceInfo
+from terminator.models import MaintenanceInfo
 
 router = Blueprint('index', __name__, url_prefix='/')
 
 
 @router.route('/', methods=('GET',))
+@cross_origin()
 def index():
-    current_app.logger.info('origin:%s, referrer: %s', request.origin, request.referrer)
-    domain = request.args.get('service')
-    service = Service.query.filter_by(domain=domain).first_or_404()
-    if service.is_separate and urlparse(request.referrer).netloc == domain:
+    request_format = request.args.get('format')
+    if request_format == 'json':
         return {}, 503
     start_dt = end_dt = None
+    domain = request.args.get('service')
     content = f'現在 {domain or "システム"} はメンテナンス中です、しばらくお待ちください。'
     if domain:
         maintenance_info = MaintenanceInfo.query.filter(MaintenanceInfo.service.has(domain=domain)).first()

@@ -38,7 +38,6 @@ class Service(TimestampMixin, db.Model):
     __tablename__ = 't_service'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     domain = db.Column(db.String(50), nullable=False, unique=True)
-    is_separate = db.Column(db.Boolean, nullable=False, default=False)
     name = db.Column(db.String(50), nullable=False)
 
     @property

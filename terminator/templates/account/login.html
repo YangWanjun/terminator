@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block page_content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
 <div class="auth-fluid">
     <!--Auth fluid left content -->
     <div class="auth-fluid-form-box">
@@ -20,19 +21,37 @@
                     </a>
                 </div>
 
-                <!-- social-->
-                <h4 class="text-center mt-0">ようこそ</h4>
-                <div class="text-center mt-4">
-                    <button class="btn btn-outline-danger rounded-pill" onclick="casLogin()">
-                        <i class="mdi mdi-google"></i>
-                        E-Business Mail
-                    </button>
-                    <p class="text-muted font-16 my-4">Or sign in with credentials</p>
-                </div>
+                {% if is_gmail_login and messages %}
+                    <!-- title-->
+                    <div class="text-center">
+                        {% for category, message in messages %}
+                            <div class="alert text-danger" role="alert">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="d-grid mb-0 text-center">
+                        <p class="text-muted">
+                            Back to
+                            <button type="button" class="btn btn-primary" onclick="casLogoutLogin()">
+                                <i class="mdi mdi-login"></i>
+                                <b>Log In</b>
+                            </button>
+                        </p>
+                    </div>
+                {% else %}
+                    <!-- social-->
+                    <h4 class="text-center mt-0">ようこそ</h4>
+                    <div class="text-center mt-4">
+                        <button class="btn btn-outline-danger rounded-pill" onclick="casLogin()">
+                            <i class="mdi mdi-google"></i>
+                            E-Business Mail
+                        </button>
+                        <p class="text-muted font-16 my-4">Or sign in with credentials</p>
+                    </div>
 
-                <!-- form -->
-                <form method="post" action="#">
-                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    <!-- form -->
+                    <form method="post" action="#">
                         {% if messages %}
                             {% for category, message in messages %}
                                 <div class="alert alert-danger" role="alert">
@@ -40,21 +59,21 @@
                                 </div>
                             {% endfor %}
                         {% endif %}
-                    {% endwith %}
-                    <div class="mb-3">
-                        <label for="id_username" class="form-label">Username</label>
-                        <input class="form-control" type="text" required="" id="id_username" name="username"
-                               placeholder="Enter your username">
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_password" class="form-label">Password</label>
-                        <input class="form-control" type="password" required="" id="id_password" name="password"
-                               placeholder="Enter your password">
-                    </div>
-                    <div class="d-grid mb-0 text-center">
-                        <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i> Log In</button>
-                    </div>
-                </form>
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Username</label>
+                            <input class="form-control" type="text" required="" id="id_username" name="username"
+                                   placeholder="Enter your username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_password" class="form-label">Password</label>
+                            <input class="form-control" type="password" required="" id="id_password" name="password"
+                                   placeholder="Enter your password">
+                        </div>
+                        <div class="d-grid mb-0 text-center">
+                            <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i> Log In</button>
+                        </div>
+                    </form>
+                {% endif %}
                 <!-- end form-->
 
                 <!-- Footer-->
@@ -84,11 +103,17 @@
     </div>
     <!-- end Auth fluid right content -->
 </div>
+{% endwith %}
 <!-- end auth-fluid-->
 <script type="text/javascript">
     function casLogin() {
         const backUrl = `${window.location.origin}/account/login`;
         window.location.assign(`https://cas.e-business.co.jp/login?service=${encodeURIComponent(backUrl)}`)
     }
+    function casLogoutLogin() {
+        const backUrl = `${window.location.origin}/account/login`;
+        window.location.assign(`https://cas.e-business.co.jp/logout?service=${encodeURIComponent(backUrl)}`)
+    }
+
 </script>
 {% endblock %}
