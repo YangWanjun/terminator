@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import not_, or_
 from wtforms import validators, Field, ValidationError
 
-from terminator.forms.fields import MyDateTimeField, MyTextAreaField, MySelectField, MyStringField
+from terminator.forms.fields import MyDateTimeField, MyTextAreaField, MySelectField, MyStringField, MyBooleanField
 from terminator.models import Service, MaintenanceInfo
 from terminator.utils import constant
 from terminator.utils.base_form import MyForm
@@ -56,6 +56,7 @@ class ServiceForm(MyForm):
         validators.DataRequired(),
         validators.Length(max=50),
     ])
+    is_separate = MyBooleanField('フロントエンドとバックエンド分離')
 
     def validate_domain(self, field: Field):
         # ドメインは一意であること

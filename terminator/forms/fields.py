@@ -1,6 +1,6 @@
-from wtforms import StringField, Label, DateTimeField, TextAreaField, SelectField
+from wtforms import StringField, Label, DateTimeField, TextAreaField, SelectField, BooleanField
 
-from terminator.forms.widgets import MyTextInput, MyDateTimeInput, MyTextArea, MySelect
+from terminator.forms.widgets import MyTextInput, MyDateTimeInput, MyTextArea, MySelect, MyCheckboxInput
 
 
 class LabelMixin(object):
@@ -73,6 +73,16 @@ class MyDateTimeField(LabelMixin, ValidateMixin, DateTimeField):
     @property
     def id_time(self):
         return f'{self.id}_time'
+
+
+class MyBooleanField(LabelMixin, ValidateMixin, BooleanField):
+    widget = MyCheckboxInput()
+
+    def process_formdata(self, valuelist):
+        if not valuelist or valuelist[0] in self.false_values:
+            self.data = False
+        else:
+            self.data = True
 
 
 class MyTextAreaField(LabelMixin, ValidateMixin, TextAreaField):

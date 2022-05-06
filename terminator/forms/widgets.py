@@ -1,5 +1,5 @@
 from markupsafe import Markup
-from wtforms.widgets import TextInput, DateTimeInput, TextArea, Select
+from wtforms.widgets import TextInput, DateTimeInput, TextArea, Select, CheckboxInput
 
 
 class MyTextInput(TextInput):
@@ -67,6 +67,14 @@ document.querySelector("#{1}").addEventListener("change", () => {{
 }});
 </script>'''.format(field.id_date, field.id_time, field.id)
         return Markup('<div class="datetime_wrapper">{}{}</div>{}{}'.format(html_date, html_time, html_hidden, script))
+
+
+class MyCheckboxInput(CheckboxInput):
+
+    def __call__(self, *args, **kwargs):
+        kwargs = kwargs or {}
+        kwargs['class'] = 'form-check-input'
+        return super(MyCheckboxInput, self).__call__(*args, **kwargs)
 
 
 class MyTextArea(TextArea):

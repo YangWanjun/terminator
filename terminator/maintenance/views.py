@@ -81,7 +81,8 @@ class ServiceDetailView(BaseMethodView):
             obj = Service.query.filter_by(id=kwargs.get('pk')).first_or_404()
         else:
             obj = None
-        form = ServiceForm(request.form, obj=obj)
+        # WTFormの不具合、GETの場合formdataはNoneでない場合、BooleanFieldは常に「False」になってしまう。
+        form = ServiceForm(None if request.method.upper() == 'GET' else request.form, obj=obj)
         return {
             'object': obj,
             'form': form,

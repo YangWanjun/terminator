@@ -42,6 +42,7 @@
                                 <tr>
                                     <th>システム名称</th>
                                     <th>ドメイン</th>
+                                    <th class="text-center">フロントエンドとバックエンド分離</th>
                                     <th class="text-center" style="width: 85px;">Action</th>
                                 </tr>
                             </thead>
@@ -50,6 +51,13 @@
                                 <tr>
                                     <td>{{ item.name }}</td>
                                     <td>{{ item.domain }}</td>
+                                    <td class="text-center">
+                                        {% if item.is_separate %}
+                                            <i class="mdi mdi-check-circle text-success"></i>
+                                        {% else %}
+                                            <i class="mdi mdi-close-circle text-danger"></i>
+                                        {% endif %}
+                                    </td>
                                     <td class="text-center">
                                         <a href="{{ url_for('service-change', pk=item.id) }}" class="action-icon"><i class="mdi mdi-square-edit-outline"></i></a>
                                         <a href="javascript:void(0)" onclick="handleDeleteMaintenance({{item.id}})" class="action-icon"><i class="mdi mdi-delete"></i></a>
