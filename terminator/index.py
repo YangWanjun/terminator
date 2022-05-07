@@ -2,6 +2,7 @@ import datetime
 
 from flask import Blueprint, request, render_template
 from flask_cors import cross_origin
+from sqlalchemy import and_
 
 from terminator.models import MaintenanceInfo
 
@@ -19,11 +20,11 @@ def index():
     content = f'現在 {domain or "システム"} はメンテナンス中です、しばらくお待ちください。'
     if domain:
         now = datetime.datetime.utcnow()
-        maintenance_info = MaintenanceInfo.query\
-            .filter(MaintenanceInfo.start_dt <= now)\
-            .filter(MaintenanceInfo.end_dt >= now)\
-            .filter(MaintenanceInfo.service.has(domain=domain))\
-            .first()
+        maintenance_info = MaintenanceInfo.query.filter(and_(
+            MaintenanceInfo.start_dt <= now.strftime('%Y-%m-%d %H:%M:%S'),
+            MaintenanceInfo.end_dt >= now.strftime('%Y-%m-%d %H:%M:%S'),
+            MaintenanceInfo.service.has(domain=domain),
+        )).first()
         if maintenance_info:
             content = maintenance_info.content
             start_dt = maintenance_info.start_dt
