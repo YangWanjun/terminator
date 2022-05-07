@@ -1,3 +1,5 @@
+import datetime
+
 from flask import Blueprint, request, render_template
 from flask_cors import cross_origin
 
@@ -16,7 +18,12 @@ def index():
     domain = request.args.get('service')
     content = f'現在 {domain or "システム"} はメンテナンス中です、しばらくお待ちください。'
     if domain:
-        maintenance_info = MaintenanceInfo.query.filter(MaintenanceInfo.service.has(domain=domain)).first()
+        now = datetime.datetime.utcnow()
+        maintenance_info = MaintenanceInfo.query\
+            .filter(MaintenanceInfo.start_dt <= now)\
+            .filter(MaintenanceInfo.end_dt >= now)\
+            .filter(MaintenanceInfo.service.has(domain=domain))\
+            .first()
         if maintenance_info:
             content = maintenance_info.content
             start_dt = maintenance_info.start_dt
