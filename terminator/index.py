@@ -19,7 +19,7 @@ def index():
     domain = request.args.get('service')
     content = f'現在 {domain or "システム"} はメンテナンス中です、しばらくお待ちください。'
     if domain:
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now()
         maintenance_info = MaintenanceInfo.query.filter(and_(
             MaintenanceInfo.start_dt <= now.strftime('%Y-%m-%d %H:%M:%S'),
             MaintenanceInfo.end_dt >= now.strftime('%Y-%m-%d %H:%M:%S'),
