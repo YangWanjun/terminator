@@ -21,9 +21,9 @@
                         <img src="{{ url_for('static', filename='custom/images/avatar.svg') }}" alt="user-image" class="rounded-circle">
                     </span>
                     <span>
-                        {% if g.user %}
-                            <span class="account-user-name">{{ g.user['username'] }}</span>
-                            <span class="account-position">{{ g.user.full_name }}</span>
+                        {% if current_user.is_authenticated %}
+                            <span class="account-user-name">{{ current_user.username }}</span>
+                            <span class="account-position">{{ current_user.full_name or '' }}</span>
                         {% else %}
                             <span class="account-user-name">Dominic Keller</span>
                             <span class="account-position">Founder</span>

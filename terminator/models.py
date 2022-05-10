@@ -2,6 +2,7 @@ from datetime import datetime
 from pathlib import Path
 
 from flask import current_app
+from flask_login import UserMixin
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -13,7 +14,7 @@ class TimestampMixin(object):
     updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
-class User(TimestampMixin, db.Model):
+class User(UserMixin, TimestampMixin, db.Model):
     __tablename__ = 't_user'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), nullable=False, unique=True)

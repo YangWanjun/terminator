@@ -1,19 +1,12 @@
 import typing as t
 
-from flask import render_template, g, redirect, url_for
+from flask import render_template
 from flask.typing import ResponseReturnValue
 from flask.views import MethodView
+from flask_login import login_required
 
 from terminator.database import db
 from terminator.hooks import transaction
-
-
-def login_required(func):
-    def wrapper(*args, **kwargs):
-        if not g.user:
-            return redirect(url_for('account.login'))
-        return func(*args, **kwargs)
-    return wrapper
 
 
 class BaseApiView(MethodView):

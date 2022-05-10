@@ -35,12 +35,10 @@ def create_app():
 
     from . import account, index
     from .maintenance import urls as maintenance_url
+    account.init_login_manager(app)
     app.register_blueprint(account.router)
     app.register_blueprint(index.router)
     maintenance_url.register_url(app)
-
-    from .hooks import register_hooks
-    register_hooks(app)
 
     from terminator.maintenance.biz import reload_schedule
     reload_schedule(app)

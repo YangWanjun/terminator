@@ -1,3 +1,5 @@
+import os
+
 from flask import request, redirect, url_for
 from sqlalchemy import desc
 
@@ -62,6 +64,8 @@ class MaintenanceDeleteView(BaseDeleteView):
 
     def post_extra(self, obj, **kwargs):
         biz.remove_schedule(obj)
+        if obj.service.upgrade_file.exists():
+            os.remove(obj.service.upgrade_file)
 
 
 class ServiceListView(BaseMethodView):
