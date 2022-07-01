@@ -40,6 +40,7 @@ class Service(TimestampMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     domain = db.Column(db.String(50), nullable=False, unique=True)
     name = db.Column(db.String(50), nullable=False)
+    secret_key = db.Column(db.String(200), nullable=False)
 
     @property
     def upgrade_file(self):

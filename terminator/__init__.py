@@ -33,11 +33,12 @@ def create_app():
     from . import database
     database.init_app(app)
 
-    from . import account, index
+    from . import account, index, api
     from .maintenance import urls as maintenance_url
     account.init_login_manager(app)
     app.register_blueprint(account.router)
     app.register_blueprint(index.router)
+    app.register_blueprint(api.router)
     maintenance_url.register_url(app)
 
     from terminator.maintenance.biz import reload_schedule

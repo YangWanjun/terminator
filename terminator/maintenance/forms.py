@@ -55,6 +55,10 @@ class ServiceForm(MyForm):
         validators.DataRequired(),
         validators.Length(max=50),
     ])
+    secret_key = MyStringField('セキュリティキー', validators=[
+        validators.DataRequired(),
+        validators.Length(max=200),
+    ])
 
     def validate_domain(self, field: Field):
         # ドメインは一意であること
