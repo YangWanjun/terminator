@@ -28,4 +28,6 @@ def maintenance_list():
                 'content': m.content,
             } for m in qs_maintenance]
             return jsonify(results)
+    print("header_signature:", header_signature)
+    print("domain:", domain)
     return jsonify({'valid': False}), 401
