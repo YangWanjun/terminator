@@ -10,7 +10,7 @@ def validate_token(header_signature: str, token: str) -> bool:
         return False
     today = datetime.date.today()
     mac = hmac.new(token.encode(encoding), msg=today.strftime('%Y%m%d').encode(encoding), digestmod=sha256)
-    print(mac.hexdigest())
+    # print(mac.hexdigest())
     if not hmac.compare_digest(mac.hexdigest().encode(encoding), signature.encode(encoding)):
         return False
     return True
